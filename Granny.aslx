@@ -1,0 +1,1408 @@
+<!--Saved by Quest 5.8.6836.13983-->
+<asl version="580">
+  <include ref="English.aslx" />
+  <include ref="Core.aslx" />
+  <game name="Granny">
+    <gameid>6c0b59b6-1b7b-4909-81db-540602015b78</gameid>
+    <version>1.0</version>
+    <firstpublished>2020</firstpublished>
+    <author>Samuel Cheng</author>
+    <category>Puzzle</category>
+    <description><![CDATA[Granny. (REVIEW, COMMENT AND DOWNLOAD THIS WORK-IN-PROGRESS PROJECT :D )<br/><br/>This is my fifth day in this house. She chases me wherever I go. I'm quite injured and my body hurts. The only thing I remember before I woke up in this house is that I was driving when my car suddenly broke down. I went out to see what the problem was when someone suddenly hit me in the head.<br/><br/>Made by Samuel Cheng.<br/><br/>This game includes the infamous Granny NPC. Inspired by Zork.<br/>Try "xyzzy"! :)<br/>2 Cheat codes, a few easter eggs!<br/>----<br/>WIP<br/><br/>v0.3 (1/11/20)<br/>- Granny NPC chases you when you make noise, SILVER key added.<br/><br/>v0.2 (30/10/20)<br/>- Fixed Granny bug, upper levels.<br/><br/>v0.1 (29/10/20)<br/>- Started<br/>- The Dark Cell added. (Extension)]]></description>
+    <menufont>Georgia, serif</menufont>
+    <feature_asktell />
+    <showscore />
+    <showhealth />
+    <feature_limitinventory />
+    <feature_advancedwearables />
+    <appendobjectdescription />
+    <gridmap type="boolean">false</gridmap>
+    <attr name="autodescription_youarein_useprefix" type="boolean">false</attr>
+    <attr name="changeroom_newline" type="boolean">false</attr>
+    <turnoffcompass />
+    <turnoffinventory />
+    <echohyperlinks type="boolean">false</echohyperlinks>
+    <cover>unnamed.jpg</cover>
+    <start type="script">
+      MoveObject (silver key, wooden ledge)
+      MoveObject (Granny, house vestibule)
+      // MoveObject (ammunition, dresser)
+    </start>
+  </game>
+  <object name="dark cell">
+    <inherit name="editor_room" />
+    <isroom />
+    <description><![CDATA[This is a dark cell, with a sliver of light coming in from a tiny window in the far corner of this cell.<br/>The grey cement walls are streaked with red blood.<br/>Curiously, I am surrounded by all four sides with walls.]]></description>
+    <firstenter type="script"><![CDATA[
+      msg ("<br/>I wake up. Where am I?  How did I get in here? A million questions are running through my head.")
+    ]]></firstenter>
+    <beforefirstenter type="script">
+    </beforefirstenter>
+    <onexit type="script">
+      Granny.sameroomcount = -1
+    </onexit>
+    <object name="player">
+      <inherit name="editor_object" />
+      <inherit name="editor_player" />
+      <inherit name="male" />
+      <scenery type="boolean">false</scenery>
+      <maxobjects type="int">0</maxobjects>
+      <maxvolume type="int">0</maxvolume>
+      <touch>You can't feel yourself.</touch>
+      <inroomdescription type="string"></inroomdescription>
+      <buy>You are priceless. There is no need to sell yourself.</buy>
+      <shout>Nobody will hear your cries.</shout>
+      <speak>This is one of the symptoms of a mental disorder.</speak>
+      <dance>I'm better at singing than dancing.</dance>
+      <kill>Killing yourself does not help.</kill>
+      <hidden type="boolean">false</hidden>
+      <roomtrail type="stringlist" />
+      <madesound type="boolean">false</madesound>
+      <prevmadesound type="boolean">false</prevmadesound>
+      <gameended type="boolean">false</gameended>
+      <sing type="script">
+        msg ("La la la!")
+      </sing>
+      <look type="script">
+      </look>
+      <attr name="pov_look" type="script">
+        if (game.pov.parent = dark cell) {
+          msg ("You stare at the cell's dark cement walls. This is weird, why can't I see myself? A wave of realisation passes through you. You are in fact ... a ghost and can pass through walls! ")
+          UnlockExit (studyE)
+          UnlockExit (studyN)
+          UnlockExit (studyS)
+          UnlockExit (studyW)
+          UnlockExit (studyNE)
+          UnlockExit (studyNW)
+          UnlockExit (studySE)
+          UnlockExit (studySW)
+          firsttime {
+            IncreaseScore (1)
+          }
+        }
+      </attr>
+    </object>
+    <object name="walls">
+      <inherit name="editor_object" />
+      <inherit name="plural" />
+      <look>The grey walls seem almost transluscent.</look>
+      <visible />
+      <scenery />
+      <isroom />
+      <usedefaultprefix type="boolean">false</usedefaultprefix>
+      <listen>You hear a grunting sound coming from behind. Wierd.</listen>
+      <kiss>Are you that desperate?</kiss>
+      <taste>It tastes like air.</taste>
+      <lie>Unless gravity is acting on the wall, it's impossible to lie on it.</lie>
+      <alias>walls</alias>
+      <touch type="script">
+        msg ("Your hand seems to pass through the walls.")
+        if (not GetBoolean(this, "alreadydone")) {
+          IncreaseScore (1)
+          this.alreadydone = true
+        }
+      </touch>
+      <feel type="script">
+        msg ("Your hand seems to pass through the walls.")
+        if (not GetBoolean(this, "alreadydone")) {
+          IncreaseScore (1)
+          this.alreadydone = true
+        }
+      </feel>
+      <knock type="script">
+        msg ("Your hand seems to pass through the walls.")
+        if (not GetBoolean(this, "alreadydone")) {
+          IncreaseScore (1)
+          this.alreadydone = true
+        }
+      </knock>
+    </object>
+    <exit name="studyN" alias="north" to="study">
+      <inherit name="northdirection" />
+      <locked />
+      <visible />
+      <scenery />
+      <lockmessage>You can't go there.</lockmessage>
+    </exit>
+    <exit name="studyE" alias="east" to="study">
+      <inherit name="eastdirection" />
+      <locked />
+      <visible />
+      <scenery />
+      <lockmessage>You can't go there.</lockmessage>
+    </exit>
+    <exit name="studyS" alias="south" to="study">
+      <inherit name="southdirection" />
+      <locked />
+      <visible />
+      <scenery />
+      <lockmessage>You can't go there.</lockmessage>
+    </exit>
+    <exit name="studyW" alias="west" to="study">
+      <inherit name="westdirection" />
+      <locked />
+      <visible />
+      <scenery />
+      <lockmessage>You can't go there.</lockmessage>
+    </exit>
+    <exit name="studyNE" alias="northeast" to="study">
+      <inherit name="northeastdirection" />
+      <visible />
+      <locked />
+      <scenery />
+      <lockmessage>You can't go there.</lockmessage>
+    </exit>
+    <exit name="studySE" alias="southeast" to="study">
+      <inherit name="southeastdirection" />
+      <locked />
+      <visible />
+      <scenery />
+      <lockmessage>You can't go there.</lockmessage>
+    </exit>
+    <exit name="studyNW" alias="northwest" to="study">
+      <inherit name="northwestdirection" />
+      <locked />
+      <visible />
+      <runscript type="boolean">false</runscript>
+      <scenery />
+      <lockmessage>You can't go there.</lockmessage>
+    </exit>
+    <exit name="studySW" alias="southwest" to="study">
+      <inherit name="southwestdirection" />
+      <locked />
+      <visible />
+      <scenery />
+      <lockmessage>You can't go there.</lockmessage>
+    </exit>
+    <object name="window">
+      <inherit name="editor_object" />
+      <touch>The wall is too far away.</touch>
+      <pull>The wall is too far away.</pull>
+      <push>The wall is too far away.</push>
+      <visible />
+      <speak>"I am stupid." You say. The window seems to solemnly agree with you.</speak>
+      <scenery />
+    </object>
+    <object name="floor1">
+      <inherit name="editor_object" />
+      <look>The grey concrete floor is smooth and cold.</look>
+      <touch>The floor is very smooth and cold.</touch>
+      <kiss>Are you that desperate?</kiss>
+      <attack>You attack the floor with your bare hands, but you only manage to hurt yourself.</attack>
+      <visible />
+      <scenery />
+      <alias>floor</alias>
+    </object>
+  </object>
+  <object name="study">
+    <inherit name="editor_room" />
+    <alias>study</alias>
+    <description type="script">
+      OutputTextNoBr ("The study smells of death. The black gravel floor is embedded with grey dirt and the room is filthy. A dark wooden table rests in a corner. A door, wide open, lies to the north. Another door, which is wide open, leads to the east.")
+    </description>
+    <firstenter type="script">
+      msg (" Why is there a study right outside the cell? Who put me in there?")
+      EnableTurnScript (Granny)
+      msg ("Your body shudders and you feel yourself materialising into a physical person. This is strange...")
+    </firstenter>
+    <onexit type="script">
+    </onexit>
+    <enter type="script">
+      list add (game.pov.roomtrail, "study")
+    </enter>
+    <exit alias="north" to="bedroom">
+      <inherit name="northdirection" />
+    </exit>
+    <object name="floor">
+      <inherit name="editor_object" />
+      <look>The black gravel floor is dotted with white gravel bits. Disgusting. There are blood spots at random places. What a cannibalist Granny must be.</look>
+      <touch>The floor is very bumpy and harsh on the skin.</touch>
+      <kiss>Are you that desperate?</kiss>
+      <attack>You attack the floor with your bare hands, but you only manage to scratch yourself.</attack>
+      <visible />
+      <scenery />
+      <alias>floor</alias>
+    </object>
+    <object name="walls1">
+      <inherit name="editor_object" />
+      <inherit name="plural" />
+      <look>Normal, wooden walls.</look>
+      <visible />
+      <scenery />
+      <isroom />
+      <usedefaultprefix type="boolean">false</usedefaultprefix>
+      <listen>You hear a grunting sound coming from behind. Wierd.</listen>
+      <kiss>Are you that desperate?</kiss>
+      <taste>It tastes like air.</taste>
+      <lie>Unless gravity is acting on the wall, it's impossible to lie on it.</lie>
+      <alias>walls</alias>
+      <touch type="script">
+        msg ("Your hand seems to pass through the walls.")
+        if (not GetBoolean(this, "alreadydone")) {
+          IncreaseScore (1)
+          this.alreadydone = true
+        }
+      </touch>
+      <feel type="script">
+        msg ("Your hand seems to pass through the walls.")
+        if (not GetBoolean(this, "alreadydone")) {
+          IncreaseScore (1)
+          this.alreadydone = true
+        }
+      </feel>
+      <knock type="script">
+        msg ("Your hand seems to pass through the walls.")
+        if (not GetBoolean(this, "alreadydone")) {
+          IncreaseScore (1)
+          this.alreadydone = true
+        }
+      </knock>
+    </object>
+    <object name="table">
+      <inherit name="editor_object" />
+      <inherit name="container_open" />
+      <alias>table</alias>
+      <scenery />
+      <liedownunder type="string"></liedownunder>
+      <feature_container />
+      <close type="boolean">false</close>
+      <open type="boolean">false</open>
+      <transparent />
+      <look type="script">
+        msg ("It's a normal wooden table, darkened by years of use. There seems to be dried-up blood on it.")
+        if (paper.parent.name = "study") {
+          if (not Got(paper)) {
+            OutputTextNoBr ("A piece of paper lies on the surface of the table.")
+          }
+        }
+        MakeObjectVisible (paper)
+      </look>
+      <liedown type="script">
+        msg ("You sneak under the table, hidden from view.")
+        MoveObject (player, table)
+        game.pov.hidden = true
+      </liedown>
+      <getout type="script">
+        msg ("You sneak out of the table into full view.")
+        MoveObject (player, study)
+        game.pov.hidden = false
+      </getout>
+    </object>
+    <object name="paper">
+      <inherit name="editor_object" />
+      <alias>paper</alias>
+      <scenery />
+      <visible type="boolean">false</visible>
+      <inroomdescription type="string"></inroomdescription>
+      <take />
+      <takemsg>You take the battered piece of paper in your hands.</takemsg>
+      <look type="script">
+        msg ("This paper is yellow and crinkled, with red blood spots on it. Seems like someone has written something on it.")
+      </look>
+      <read type="script">
+        msg ("The handwriting is horrible. It reads: This is my fifth day in this house. She chases me wherever I go. I'm quite injured and my body hurts. The only thing I remember before I woke up in this house is that I was driving when my car suddenly broke down. I went out to see what the problem was when someone suddenly hit me in the head. Why does she do this? I hope no one will experience the same thing as I do. If I do not survive this and if someone finds this message, I have noticed that she sometimes hides things inside fruits.")
+        firsttime {
+          IncreaseScore (1)
+        }
+      </read>
+      <dropmsg>You put the piece of paper back into place on the table.</dropmsg>
+    </object>
+    <object name="door">
+      <inherit name="editor_object" />
+      <look>A normal, wooden door. Nothing interesting.</look>
+      <scenery />
+    </object>
+    <exit alias="east" to="corridor">
+      <inherit name="eastdirection" />
+    </exit>
+  </object>
+  <verb>
+    <property>feel</property>
+    <pattern>feel</pattern>
+    <defaultexpression>"You can't feel " + object.article + "."</defaultexpression>
+  </verb>
+  <turnscript name="grannyturnscript">
+    <enabled />
+    <script><![CDATA[
+      if (Granny.cheatRevealPos) {
+        msg ("Granny is at the " + ToString(Granny.parent) + ".")
+      }
+      Granny.turns = Granny.turns + 1
+      // msg(getRandomInt(0, 5))
+      if (Granny.sameroomcount >= 2 and Granny.parent = game.pov.parent) {
+        if (not game.pov.hidden) {
+          if (RandomChance(40)) {
+            game.pov.health = 0
+            msg ("\"OW!\" Granny swings her baton at your head and you slowly lose conciousness. Everything fades to black.")
+            gameover
+          }
+        }
+      }
+      else if (Granny.parent = game.pov.parent) {
+        if (game.pov.hidden) {
+          msg (" You are safely hidden from Granny's field of vision.")
+        }
+        else {
+          Granny.sameroomcount = Granny.sameroomcount + 1
+        }
+      }
+      else if (game.pov.madesound) {
+        if (Granny.parent = game.pov.parent) {
+          game.pov.madesound = false
+          game.pov.prevmadesound = false
+          movetosimple
+        }
+        else if (game.pov.prevmadesound) {
+          moveto
+        }
+        else {
+          if (not game.pov.parent.name = "dark cell") {
+            moveto
+          }
+          game.pov.prevmadesound = true
+        }
+      }
+      else {
+        movetosimple
+        Granny.sameroomcount = 0
+      }
+      if (Granny.parent = game.pov.parent) {
+        if (not game.pov.gameended) {
+          msg (" Grunt. Granny makes a move towards you. You'd better run.")
+          game.pov.madesound = false
+          game.pov.prevmadesound = false
+        }
+      }
+    ]]></script>
+  </turnscript>
+  <object name="bedroom">
+    <inherit name="editor_room" />
+    <description><![CDATA[This bedroom is old, streaks of blood are on the walls and the bed is filled with bedbugs. Ew, this place hasn't been cleaned up for years.<br/>There is a dresser here, opposite the bed.<br/>A door lies open, leading South.<br/>Another door leads to the Southeast.]]></description>
+    <enter type="script">
+      list add (game.pov.roomtrail, "bedroom")
+    </enter>
+    <exit alias="south" to="study">
+      <inherit name="southdirection" />
+    </exit>
+    <object name="bed">
+      <inherit name="editor_object" />
+      <inherit name="container_open" />
+      <look>The bed is a queen side-by-side. It looks like it hasn't been cleaned for years. The sound of cockroaches moving is horrid.</look>
+      <feature_container />
+      <close type="boolean">false</close>
+      <open type="boolean">false</open>
+      <transparent />
+      <lie>You have no time for that.</lie>
+      <touch>It feels like a normal bed.</touch>
+      <liedown type="script">
+        msg ("You sneak under the bed, hidden from view.")
+        MoveObject (player, bed)
+        game.pov.hidden = true
+      </liedown>
+      <getout type="script">
+        msg ("You sneak out of the table into full view.")
+        MoveObject (player, study)
+        game.pov.hidden = false
+      </getout>
+    </object>
+    <object name="dresser">
+      <inherit name="editor_object" />
+      <inherit name="openable" />
+      <scenery />
+      <visible />
+      <alias>dresser</alias>
+      <feature_container />
+      <look type="script">
+        msg ("The dresser is wooden and looks like it contains something. There is a mirror sitting on top of it.")
+      </look>
+      <openscript type="script">
+        msg ("You open the drawer of the dresser.")
+        if (ammunition.parent.name = "bedroom") {
+          if (not Got(ammunition)) {
+            OutputTextNoBr (" There is a piece of ammunition here.")
+          }
+        }
+        MakeObjectVisible (ammunition)
+      </openscript>
+    </object>
+    <object name="walls2">
+      <inherit name="editor_object" />
+      <inherit name="plural" />
+      <look>Normal, wooden walls.</look>
+      <visible />
+      <scenery />
+      <isroom />
+      <usedefaultprefix type="boolean">false</usedefaultprefix>
+      <listen>You hear a grunting sound coming from behind. Wierd.</listen>
+      <kiss>Are you that desperate?</kiss>
+      <taste>It tastes like air.</taste>
+      <lie>Unless gravity is acting on the wall, it's impossible to lie on it.</lie>
+      <alias>walls</alias>
+      <touch type="script">
+        msg ("Your hand seems to pass through the walls.")
+        if (not GetBoolean(this, "alreadydone")) {
+          IncreaseScore (1)
+          this.alreadydone = true
+        }
+      </touch>
+      <feel type="script">
+        msg ("Your hand seems to pass through the walls.")
+        if (not GetBoolean(this, "alreadydone")) {
+          IncreaseScore (1)
+          this.alreadydone = true
+        }
+      </feel>
+      <knock type="script">
+        msg ("Your hand seems to pass through the walls.")
+        if (not GetBoolean(this, "alreadydone")) {
+          IncreaseScore (1)
+          this.alreadydone = true
+        }
+      </knock>
+    </object>
+    <object name="floor2">
+      <inherit name="editor_object" />
+      <look>The black gravel floor is dotted with white gravel bits. Disgusting. There are blood spots at random places. What a cannibalist Granny must be.</look>
+      <touch>The floor is very bumpy and harsh on the skin.</touch>
+      <kiss>Are you that desperate?</kiss>
+      <attack>You attack the floor with your bare hands, but you only manage to scratch yourself.</attack>
+      <visible />
+      <scenery />
+      <alias>floor</alias>
+    </object>
+    <exit alias="southeast" to="corridor">
+      <inherit name="southeastdirection" />
+      <exit alias="west" to="study">
+        <inherit name="westdirection" />
+      </exit>
+    </exit>
+    <object name="mirror">
+      <inherit name="editor_object" />
+      <look>There is an ugly person staring back at you.</look>
+      <takemsg>The mirror seems held into place.</takemsg>
+    </object>
+    <object name="ammunition">
+      <inherit name="editor_object" />
+      <alias>ammunition</alias>
+      <look>Woah. It looks like shotgun ammunition. Who'd leave such things lying around?</look>
+      <visible type="boolean">false</visible>
+      <scenery type="boolean">false</scenery>
+      <take />
+      <takemsg>You take the ammunition.</takemsg>
+      <dropmsg>You drop the ammunition.</dropmsg>
+      <not_all />
+    </object>
+  </object>
+  <verb>
+    <property>shout</property>
+    <pattern>shout</pattern>
+    <defaultexpression>"You can't shout " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>dance</property>
+    <pattern>dance</pattern>
+    <defaultexpression>"You can't dance " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>sing</property>
+    <pattern>sing</pattern>
+    <defaultexpression>"You can't sing " + object.article + "."</defaultexpression>
+  </verb>
+  <command>
+    <pattern>dance</pattern>
+    <script>
+      msg ("I'm better at singing than dancing.")
+    </script>
+  </command>
+  <command>
+    <pattern>sing</pattern>
+    <script>
+      msg ("La la la! ")
+      if (not game.pov.parent.name = "dark cell") {
+        game.pov.madesound = true
+      }
+    </script>
+  </command>
+  <command>
+    <pattern>shout</pattern>
+    <script>
+      msg ("Nobody will hear your cries.")
+    </script>
+  </command>
+  <command>
+    <pattern>xyzzy</pattern>
+    <script><![CDATA[
+      msg ("A husky voice intones, \"I knew you'd try typing this, and I must say I'm getting mighty tired of being summoned up willy nilly to fulfill some sort of neurotic desire to fill a game with as many lame injokes as possible. So begone.<br/>*** You have pissed off the voice (that's a first) ***")
+    ]]></script>
+  </command>
+  <command>
+    <pattern>no</pattern>
+    <script>
+      msg ("Of course.")
+    </script>
+  </command>
+  <command>
+    <pattern>yes</pattern>
+    <scope type="string"></scope>
+    <script>
+      msg ("Definitely.")
+    </script>
+  </command>
+  <verb>
+    <property>attack</property>
+    <pattern>attack</pattern>
+    <defaultexpression>"You can't attack " + object.article + "."</defaultexpression>
+  </verb>
+  <command>
+    <pattern>jump</pattern>
+    <script>
+      if (game.pov.parent.name = "stairway landing" and ListContains(ScopeVisible(), wooden ledge)) {
+        msg ("You jump and hold on to the wooden ledge. It seems to hold.")
+        MoveObject (player, wooden ledge)
+      }
+      else {
+        msg ("You jump with - joy?")
+      }
+    </script>
+  </command>
+  <command>
+    <pattern>scream</pattern>
+    <script>
+      msg ("Screaming does not help.")
+    </script>
+  </command>
+  <command>
+    <pattern>sing river</pattern>
+    <scope type="string"></scope>
+    <script>
+      msg ("You sing the forbidden word with great joy. A sense of satisfaction and total elation envelops you and are enlightened yourself.")
+      firsttime {
+        msg ("*** Your score has increased by 100. ***")
+        IncreaseScore (100)
+        IncreaseHealth (100)
+        msg ("*** Your health has increased to 100%***")
+        msg ("*** Granny's position is revealed.***")
+        Granny.cheatRevealPos = true
+      }
+    </script>
+  </command>
+  <verb>
+    <property>liedown</property>
+    <pattern>lie down; lie under; lie below; lie down below; lie under below; crawl under; crawl beneath; crawl below; get under; get beneath; get below</pattern>
+    <defaultexpression>"You can't lie down below " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>getout</property>
+    <pattern>get out; get out of; crawl out; crawl out of</pattern>
+    <defaultexpression>"You can't crawl out of " + object.article + "."</defaultexpression>
+  </verb>
+  <command>
+    <pattern>fuck</pattern>
+    <script>
+      choice = GetRandomInt(1, 3)
+      if (choice = 1) {
+        msg ("You ought to be ashamed of yourself.")
+      }
+      else if (choice = 2) {
+        msg ("Such language in a high-class establishment like this!")
+      }
+      else {
+        msg ("It's not so bad. You could have been killed already.")
+      }
+    </script>
+  </command>
+  <command>
+    <pattern>fuck you</pattern>
+    <script>
+      choice = GetRandomInt(1, 3)
+      if (choice  = 1) {
+        msg ("Slow down there cowboy.")
+      }
+      else if (choice = 2) {
+        msg ("Such anger issues.")
+      }
+      else {
+        msg ("I'm not that type of game.")
+      }
+    </script>
+  </command>
+  <command>
+    <pattern>bitch</pattern>
+    <script>
+      choice = GetRandomInt(1, 5)
+      if (choice = 1) {
+        msg ("Calm down. Have some dip.")
+      }
+      else if (choice = 2) {
+        msg ("Slut!")
+      }
+      else if (choice = 3) {
+        msg ("This is hardly a productive.")
+      }
+      else if (choice = 4) {
+        msg ("Bastard.")
+      }
+      else {
+        msg ("There are no female dogs here.")
+      }
+    </script>
+  </command>
+  <object name="corridor">
+    <inherit name="editor_room" />
+    <description>This corridor has many doors. There is a picture of Granny in a heavy wooden frame on the wall. There is a forbidding staircase leading down and doors on the northwest and west.</description>
+    <enter type="script">
+      // GetObject()
+      list add (game.pov.roomtrail, "corridor")
+    </enter>
+    <beforeenter type="script">
+    </beforeenter>
+    <exit alias="northwest" to="bedroom">
+      <inherit name="northwestdirection" />
+    </exit>
+    <object name="floor3">
+      <inherit name="editor_object" />
+      <look>The wooden floor is dark and rotting. Disgusting. There are blood spots at random places. What a cannibalist Granny must be.</look>
+      <touch>The floor is very bumpy and harsh on the skin.</touch>
+      <kiss>Are you that desperate?</kiss>
+      <attack>You attack the floor with your bare hands, but you only manage to scratch yourself.</attack>
+      <visible />
+      <scenery />
+      <alias>floor</alias>
+    </object>
+    <object name="walls3">
+      <inherit name="editor_object" />
+      <inherit name="plural" />
+      <look>Normal, wooden walls. Why do you care so much about walls? Nothing to see here.</look>
+      <visible />
+      <scenery />
+      <isroom />
+      <usedefaultprefix type="boolean">false</usedefaultprefix>
+      <listen>You hear a grunting sound coming from behind. Wierd.</listen>
+      <kiss>Are you that desperate?</kiss>
+      <taste>It tastes like air.</taste>
+      <lie>Unless gravity is acting on the wall, it's impossible to lie on it.</lie>
+      <alias>walls</alias>
+      <touch type="script">
+        msg ("Your hand seems to pass through the walls.")
+        if (not GetBoolean(this, "alreadydone")) {
+          IncreaseScore (1)
+          this.alreadydone = true
+        }
+      </touch>
+      <feel type="script">
+        msg ("Your hand seems to pass through the walls.")
+        if (not GetBoolean(this, "alreadydone")) {
+          IncreaseScore (1)
+          this.alreadydone = true
+        }
+      </feel>
+      <knock type="script">
+        msg ("Your hand seems to pass through the walls.")
+        if (not GetBoolean(this, "alreadydone")) {
+          IncreaseScore (1)
+          this.alreadydone = true
+        }
+      </knock>
+    </object>
+    <object name="frame">
+      <inherit name="editor_object" />
+      <alias>picture</alias>
+      <look>This is a heavy photo frame with Granny's disgusting grey face on it. It seems like something out of a horror movie.</look>
+      <move type="script">
+        msg ("After battling with the heavy wooden picture frame for a good few seconds, the picture frame shifts with a loud creak. Behind it is a blank wall. Nothing interesting here; moving on...")
+        msg ("You hear Granny's distant footsteps coming towards you.")
+        game.pov.madesound = true
+      </move>
+    </object>
+    <exit alias="down" to="stairway landing">
+      <inherit name="downdirection" />
+    </exit>
+  </object>
+  <object name="stairway landing">
+    <inherit name="editor_room" />
+    <description type="script">
+      msg ("You reach a stairway landing. There are stairs leading up and a very sinister looking set of stairs leading down. There is a shadow on the ground.")
+    </description>
+    <enter type="script">
+      // GetObject()
+      list add (game.pov.roomtrail, "stairway landing")
+    </enter>
+    <exit alias="up" to="corridor">
+      <inherit name="updirection" />
+    </exit>
+    <object name="wooden ledge">
+      <inherit name="editor_object" />
+      <inherit name="container_open" />
+      <alias>sturdy wooden ledge</alias>
+      <scenery />
+      <visible type="boolean">false</visible>
+      <feature_container />
+      <close type="boolean">false</close>
+      <open type="boolean">false</open>
+      <transparent />
+      <hidechildren type="boolean">false</hidechildren>
+      <isopen />
+      <inroomdescription type="string"></inroomdescription>
+      <look type="script">
+        if (game.pov.parent.name = "wooden ledge") {
+          if (silver key.parent.name = "wooden ledge") {
+            firsttime {
+              msg ("A silver key sits on the ledge.")
+              MakeObjectVisible (silver key)
+            }
+            otherwise {
+              msg ("You see a silver key on the wooden ledge.")
+            }
+          }
+        }
+      </look>
+      <object name="silver key">
+        <inherit name="editor_object" />
+        <look>A shining silver key. This key has an aura of evil around it.</look>
+        <scenery />
+        <visible type="boolean">false</visible>
+        <take />
+        <takemsg>You take the silver key. It feels cold.</takemsg>
+        <dropmsg>You drop the silver key with a clatter.</dropmsg>
+        <ondrop type="script">
+          game.pov.madesound = true
+        </ondrop>
+      </object>
+    </object>
+    <turnscript name="main">
+      <enabled />
+      <script><![CDATA[
+        if (game.pov.parent.name = "wooden ledge") {
+          msg ("You are holding on to the sturdy wooden ledge. The only way out is to <b>let go</b>. Your muscles strain with the stress. Your head is still below the ledge even though you are holding on.")
+        }
+      ]]></script>
+    </turnscript>
+    <exit alias="down" to="house vestibule">
+      <inherit name="downdirection" />
+    </exit>
+  </object>
+  <object name="house vestibule">
+    <inherit name="editor_room" />
+    <description><![CDATA[This is a antechamber between the outer door and the interior parts of Granny's house. There is a huge iron door with three very peculiar set of locks to your <b>east</b>, bolting the door securely in its place. Also, a rug lies on the floor.]]></description>
+    <onexit type="script">
+    </onexit>
+    <enter type="script">
+      // GetObject()
+      list add (game.pov.roomtrail, "house vestibule")
+    </enter>
+    <exit alias="up" to="stairway landing">
+      <inherit name="updirection" />
+    </exit>
+    <object name="gold padlock">
+      <inherit name="editor_object" />
+      <locked />
+      <alias>gold padlock</alias>
+      <take type="boolean">false</take>
+      <look type="script">
+        msg ("This is a heavy-duty cast-iron padlock. It seems to have gold paint painted on it or it is covered by a thin gold layer. Anyway, it looks very worn out but still seems to be close to unbreakable. ")
+        if (gold padlock.locked) {
+          OutputTextNoBr ("Unfortunately, this padlock is securely locked.")
+        }
+        else {
+          OutputTextNoBr ("The lock is open.")
+        }
+      </look>
+      <unlock type="script">
+        if (Got(golden key)) {
+          if (golden padlock.locked) {
+            msg ("You slowly force the key in and use all your strength to turn it. The padlock pops open.")
+            IncreaseScore (1)
+            golden padlock.locked = false
+          }
+          else {
+            msg ("The padlock is already unlocked.")
+          }
+        }
+        else {
+          msg ("You do not have the silver key to unlock this.")
+        }
+      </unlock>
+    </object>
+    <object name="heavy oak door">
+      <inherit name="editor_object" />
+      <inherit name="openable" />
+      <scenery />
+      <look>This oak door looks extremely heavy. It also seems to be reinforced with steel, making it impossible to break through.</look>
+      <feature_container />
+      <openscript type="script">
+        if (not gold padlock.locked) {
+          if (not silver padlock.locked) {
+            if (not rusted padlock.locked) {
+              msg ("The door slowly creaks open loudly when you pull with all your might.")
+              game.pov.madesound = true
+              MakeExitVisible (outsidedoor)
+            }
+          }
+        }
+      </openscript>
+    </object>
+    <exit name="outsidedoor" alias="east" to="outside">
+      <inherit name="eastdirection" />
+      <visible type="boolean">false</visible>
+      <scenery type="boolean">false</scenery>
+    </exit>
+    <object name="silver padlock">
+      <inherit name="editor_object" />
+      <locked />
+      <unlock type="script">
+        if (Got(silver key)) {
+          if (silver padlock.locked) {
+            msg ("You slowly force the key in and use all your strength to turn it. The padlock pops open.")
+            IncreaseScore (1)
+            silver padlock.locked = false
+          }
+          else {
+            msg ("The padlock is already unlocked.")
+          }
+        }
+        else {
+          msg ("You do not have the silver key to unlock this.")
+        }
+      </unlock>
+      <look type="script">
+        msg ("This is a heavy-duty cast-iron padlock. It seems to have silver paint painted on it. Anyway, it looks very worn out but still seems to be close to unbreakable. ")
+        if (silver padlock.locked) {
+          OutputTextNoBr ("Unfortunately, this padlock is securely locked.")
+        }
+        else {
+          OutputTextNoBr ("The lock is open.")
+        }
+      </look>
+    </object>
+    <object name="rusted padlock">
+      <inherit name="editor_object" />
+      <locked />
+      <unlock type="script">
+        if (Got(silver key)) {
+          if (rusted padlock.locked) {
+            msg ("You slowly force the key in and use all your strength to turn it. The padlock pops open.")
+            IncreaseScore (1)
+            rusted padlock.locked = false
+          }
+          else {
+            msg ("The padlock is already unlocked.")
+          }
+        }
+        else {
+          msg ("You do not have the bronze key to unlock this.")
+        }
+      </unlock>
+      <look type="script">
+        msg ("This is a rusted iron padlock. You grasp it and realise that although its age, it still seems very strong indeed.")
+        if (rusted padlock.locked) {
+          OutputTextNoBr ("Unfortunately, this padlock is securely locked.")
+        }
+        else {
+          OutputTextNoBr ("The lock is open.")
+        }
+      </look>
+    </object>
+    <object name="rug">
+      <inherit name="editor_object" />
+      <alias>heavy rug</alias>
+      <look>This is a heavy fur rug which is too heavy to carry.</look>
+      <not_all />
+      <takemsg>This rug is too heavy to be carried.</takemsg>
+      <scenery />
+      <visible />
+      <move type="script">
+        msg ("You move the rug slowly, revealing a metal grating.")
+        MakeObjectVisible (metal grating)
+      </move>
+    </object>
+    <object name="metal grating">
+      <inherit name="editor_object" />
+      <inherit name="openable" />
+      <visible type="boolean">false</visible>
+      <scenery />
+      <alias>grating</alias>
+      <look>The metal grating is rusted. A spiral staircase descends into darkness, below the grating.</look>
+      <feature_container />
+      <close type="boolean">false</close>
+      <move>I think you mean "Open".</move>
+      <openscript type="script">
+        msg ("After much struggling with opening the grating, it finally slides open with an audible screech.")
+        MakeExitVisible (cellarDown)
+        game.pov.madesound = true
+        cellar.opened = true
+      </openscript>
+    </object>
+    <object name="lamp">
+      <inherit name="editor_object" />
+      <turnedon type="boolean">false</turnedon>
+      <battery type="int">20</battery>
+      <look>Hmm. This lamp seems a little faulty. But besides it being rusty, it looks pretty normal.</look>
+      <take />
+      <takemsg>You hold the rusty lamp in your hands.</takemsg>
+      <dropmsg>You drop the rusty lamp.</dropmsg>
+      <turnon type="script"><![CDATA[
+        if (lamp.battery > 0) {
+          msg ("After knocking it a few times, the lamp flickers on. ")
+          game.pov.madesound = true
+          lamp.turnedon = true
+        }
+        else {
+          msg ("The lamp seems to have run out of battery. That's too bad.")
+        }
+      ]]></turnon>
+      <turnoff type="script">
+        if (lamp.turnedon) {
+          msg ("You switch the lamp off.")
+          lamp.turnedon = false
+        }
+        else {
+          msg ("You can't turn the lamp off if it is already off.")
+        }
+      </turnoff>
+    </object>
+    <exit name="cellarDown" alias="down" to="cellar">
+      <inherit name="downdirection" />
+      <locked type="boolean">false</locked>
+      <visible type="boolean">false</visible>
+      <scenery />
+    </exit>
+    <object name="Granny">
+      <inherit name="editor_object" />
+      <inherit name="namedfemale" />
+      <feature_usegive />
+      <feature_startscript />
+      <inroomdescription type="string"></inroomdescription>
+      <givesingle type="boolean">false</givesingle>
+      <turns type="int">0</turns>
+      <sameroomcount type="int">0</sameroomcount>
+      <give>Granny snatches it from your hands.</give>
+      <roomtarget type="string"></roomtarget>
+      <cheatRevealPos type="boolean">false</cheatRevealPos>
+      <next type="boolean">false</next>
+      <look type="script">
+        msg ("Granny is plain disgusting. Her face is grey, with a greyish-white hair bun. Her eyeballs hang out of their sockets, with a single vein hanging on to them. How can she see? You wonder. She holds a wooden baton in her hand that can take you out in one blow.")
+        if (RandomChance(50)) {
+          msg ("Granny roars at you, coming at you with her wooden baton.")
+        }
+      </look>
+      <attr name="_initialise_" type="script">
+        MakeObjectVisible (Granny)
+        MoveObject (Granny, house vestibule)
+        SetTurnScript (Granny) {
+          if (game.pov.parent = dark cell) {
+            msg ("Roar!!!")
+            ClearScreen
+          }
+        }
+      </attr>
+      <attack type="script">
+        msg ("Your attack is futile. Granny seems to be an indestructable undead.")
+      </attack>
+      <ask type="scriptdictionary">
+        <item key="granny">
+          msg ("Roar. Grunt.")
+        </item>
+      </ask>
+    </object>
+    <exit alias="north" to="kitchen">
+      <inherit name="northdirection" />
+    </exit>
+  </object>
+  <command name="look up">
+    <pattern>look up; gaze up</pattern>
+    <script>
+      if (game.pov.parent.name = "stairway landing") {
+        msg ("You gaze up and see a small wooden ledge that seems to be able to support your weight. It looks sturdy enough. It is a foot out of reach.")
+        MakeObjectVisible (wooden ledge)
+      }
+      else {
+        msg ("You gaze up at the ceiling.")
+      }
+    </script>
+  </command>
+  <command name="let go">
+    <pattern>let go</pattern>
+    <script>
+      if (game.pov.parent.name = "wooden ledge") {
+        msg ("You let go of the wooden ledge to land on the stairway landing. Your stretch your hands from the exertion.")
+        MoveObject (player, stairway landing)
+      }
+      else {
+        msg ("You are not holding on to anything.")
+      }
+    </script>
+  </command>
+  <object name="golden key">
+    <inherit name="editor_object" />
+  </object>
+  <object name="bronze key">
+    <inherit name="editor_object" />
+  </object>
+  <object name="outside">
+    <inherit name="editor_room" />
+    <alias>Outside.</alias>
+    <firstenter type="script"><![CDATA[
+      msg ("Finally, Fresh air. I gasp for breath as the crisp night air gets sucked into your lungs. Granny runs to the door, <i>howling and screaming,</i> attempting to smash your head open. In a split second, I sprinted away into the <b>dark, endless, night.</b>")
+      msg ("*** You have successfully escaped Granny. ***")
+      picture ("unnamed.jpg")
+      ShowYouTube ("dQw4w9WgXcQ")
+      msg ("Also, congrats, you have been rickrolled.")
+    ]]></firstenter>
+  </object>
+  <command>
+    <pattern>this in</pattern>
+    <script>
+      msg ("Hmph. Everything is unlocked.")
+      gold padlock.locked = false
+      silver padlock.locked = false
+      rusted padlock.locked = false
+    </script>
+  </command>
+  <object name="cellar">
+    <inherit name="editor_room" />
+    <opened type="boolean">false</opened>
+    <sameroomcount type="int">0</sameroomcount>
+    <onexit type="script">
+      cellar.sameroomcount = 0
+    </onexit>
+    <description type="script">
+      if (not cellar.dark) {
+        msg ("This is a small and cramped cellar. It is barren and the room is more or less empty.")
+      }
+    </description>
+    <enter type="script"><![CDATA[
+      firsttime {
+        msg ("You have entered a <b>bonus room</b>. These rooms give you hints for various portions of the games, whether it is cheat codes or otherwise.")
+      }
+    ]]></enter>
+    <exit alias="up" to="house vestibule">
+      <inherit name="updirection" />
+    </exit>
+    <turnscript name="darkness">
+      <enabled />
+      <script>
+        if (game.pov.parent.name = "cellar") {
+          if (cellar.dark) {
+            checkdarkness ("cellar")
+          }
+        }
+      </script>
+    </turnscript>
+    <turnscript name="changedarkness">
+      <enabled />
+      <script>
+        if (Got(lamp)) {
+          if (game.pov.parent.name = "cellar") {
+            if (lamp.turnedon = true) {
+              cellar.dark = false
+              MakeObjectVisible (paper1)
+            }
+            else {
+              cellar.dark = true
+              MakeObjectInvisible (paper1)
+            }
+          }
+        }
+        else {
+          cellar.dark = true
+          MakeObjectInvisible (paper1)
+        }
+      </script>
+    </turnscript>
+    <object name="paper1">
+      <inherit name="editor_object" />
+      <alias>paper</alias>
+      <look>This paper is yellow and crinkled, with red blood spots on it. Seems like someone has written something on it. Hmm, Granny may have left this here.</look>
+      <visible type="boolean">false</visible>
+      <read>It reads: "Don't type this in. It won't help you. MWAHAHAHAHA" The handwriting seems to be Granny's, easily discernable by the scratchy handwriting.</read>
+    </object>
+  </object>
+  <turnscript name="lampbattery">
+    <enabled />
+    <script><![CDATA[
+      if (Got(lamp)) {
+        if (lamp.turnedon) {
+          if (lamp.battery >= 15) {
+            msg ("The light emitting from the lamp is steady.")
+          }
+          else if (lamp.battery < 15 and lamp.battery >= 10) {
+            msg ("The light emitting from the lamp wavers slightly and dimmers slightly.")
+          }
+          else if (lamp.battery < 10 and lamp.battery >= 5) {
+            msg ("The light emitting from the lamp grows significantly dimmer.")
+          }
+          else if (lamp.battery > 0 and lamp.battery < 5) {
+            msg ("The light emitting from the lamp has almost gone out completely.")
+          }
+          else {
+            msg ("The battery has run out and the lamp is extinguished.")
+            lamp.turnedon = false
+          }
+          lamp.battery = lamp.battery - 1
+        }
+      }
+      else {
+        lamp.turnedon = false
+      }
+    ]]></script>
+  </turnscript>
+  <object name="kitchen">
+    <inherit name="editor_room" />
+    <alias>kitchen</alias>
+    <description type="script"><![CDATA[
+      picture ("kitchen.jpg")
+      msg ("The kitchen is barren, as with most of the other rooms. The only thing remaining is the wooden kitchen table and a large, bulky radio. There is a sink and a large stretch of <b>cupboards</b> underneath.")
+    ]]></description>
+    <exit alias="south" to="house vestibule">
+      <inherit name="southdirection" />
+    </exit>
+    <object name="radio">
+      <inherit name="editor_object" />
+      <on type="boolean">false</on>
+      <look>The radio dial is set to FM 92.4 and the dial is broken, smashed to a mush. However, it still looks like it works. The switch at the side of it is not destroyed. Hmm... should I switch it on?</look>
+      <usestandardverblist type="boolean">false</usestandardverblist>
+      <useindividualverblist />
+      <batterystate type="boolean">false</batterystate>
+      <turnon type="script"><![CDATA[
+        if (radio.on) {
+          msg ("You can't turn the radio on when it is already on in the first place.")
+        }
+        else {
+          if (not radio.batterystate) {
+            msg ("You turn the radio on and it cackles to life. Instead of the expected classical music, a very recognisable tune erupts from this device at a blasting volume.")
+            radio.on = true
+            game.pov.madesound = true
+            ShowYouTube ("dQw4w9WgXcQ")
+            msg ("<b><i>Never gonna give you up, never gonna let you down...</i></b> Music blares from the radio speakers for a few seconds. However, after a few seconds, the radio fades away as it runs out of battery.")
+            radio.on = false
+            radio.batterystate = true
+          }
+          else {
+            msg ("<i>Click. Click.</i> The radio has run out of battery.")
+            game.pov.madesound = true
+          }
+        }
+      ]]></turnon>
+      <turnoff type="script">
+        if (radio.on) {
+          msg ("You turn the radio off and it turns silent.")
+          radio.on = false
+        }
+        else {
+          msg ("You can't turn the radio off when it is already off in the first place.")
+        }
+      </turnoff>
+    </object>
+    <object name="table1">
+      <inherit name="editor_object" />
+      <inherit name="container_open" />
+      <alias>kitchen table</alias>
+      <scenery />
+      <liedownunder type="string"></liedownunder>
+      <feature_container />
+      <close type="boolean">false</close>
+      <open type="boolean">false</open>
+      <transparent />
+      <look type="script">
+        msg ("It's a normal wooden kitchen table, darkened by years of use. There seems to be dried-up blood on it. ")
+        if (clove of garlic.parent.name = "study") {
+          if (not Got(paper)) {
+            OutputTextNoBr ("A piece of paper lies on the surface of the table.")
+          }
+        }
+        MakeObjectVisible (clove of garlic)
+      </look>
+      <liedown type="script">
+        msg ("You sneak under the table, hidden from view.")
+        MoveObject (player, table)
+        game.pov.hidden = true
+      </liedown>
+      <getout type="script">
+        msg ("You sneak out of the table into full view.")
+        MoveObject (player, study)
+        game.pov.hidden = false
+      </getout>
+      <visible />
+    </object>
+    <object name="clove of garlic">
+      <inherit name="editor_object" />
+      <inherit name="edible" />
+      <visible type="boolean">false</visible>
+      <alias>garlic</alias>
+      <scenery type="boolean">false</scenery>
+      <eat type="script">
+        if (HasString(this, "eatmsg")) {
+          msg (this.eatmsg)
+        }
+        else {
+          msg (DynamicTemplate("Eaten", this))
+        }
+        if (HasInt(game.pov, "health")) {
+          game.pov.health = game.pov.health + this.eathealth
+        }
+        destroy (this.name)
+      </eat>
+      <take />
+      <takemsg>You take the clove of garlic.</takemsg>
+      <dropmsg>You drop the clove of garlic.</dropmsg>
+      <feature_edible />
+      <eathealth type="int">-1</eathealth>
+      <eatmsg>Thank you very much. It really hit the spot.</eatmsg>
+    </object>
+    <object name="sink">
+      <inherit name="editor_object" />
+      <inherit name="container_open" />
+      <feature_container />
+      <open type="boolean">false</open>
+      <close type="boolean">false</close>
+      <transparent />
+    </object>
+  </object>
+  <function name="moveto">
+    targetroom = ""
+    // next = false
+    // msg (ListContains(study, room))
+    roommove = ""
+    // msg (game.pov.roomtrail)
+    foreach (roomelement, game.pov.roomtrail) {
+      // msg ("entered moveto")
+      if (Granny.next) {
+        roommove = ToString(roomelement)
+      }
+      else if (GetObject(roomelement) = Granny.parent) {
+        Granny.next = true
+      }
+    }
+    if (roommove = "") {
+      movetosimple
+    }
+    else {
+      MoveObject (Granny, GetObject(roommove))
+    }
+    // msg ("exit moveto")
+  </function>
+  <function name="movetosimple">
+    // Time to hardcode this
+    if (Granny.parent.name = "study") {
+      choice = GetRandomInt(1, 2)
+      if (choice = 1) {
+        MoveObject (Granny, bedroom)
+        if (Granny.parent = game.pov.parent) {
+          msg ("Granny enters your room, coming after you.")
+        }
+      }
+      else if (choice = 2) {
+        MoveObject (Granny, corridor)
+        if (Granny.parent = game.pov.parent) {
+          msg ("Granny enters your room, coming after you.")
+        }
+      }
+    }
+    else if (Granny.parent.name = "bedroom") {
+      choice = GetRandomInt(1, 2)
+      if (choice = 1) {
+        MoveObject (Granny, study)
+        if (Granny.parent = game.pov.parent) {
+          msg ("Granny enters your room, coming after you.")
+        }
+      }
+      else if (choice = 2) {
+        MoveObject (Granny, corridor)
+        if (Granny.parent = game.pov.parent) {
+          msg ("Granny enters your room, coming after you.")
+        }
+      }
+    }
+    else if (Granny.parent.name = "corridor") {
+      choice = GetRandomInt(1, 4)
+      if (choice = 1) {
+        MoveObject (Granny, study)
+        if (Granny.parent = game.pov.parent) {
+          msg ("Granny enters your room, coming after you.")
+        }
+      }
+      else if (choice = 2) {
+        MoveObject (Granny, bedroom)
+        if (Granny.parent = game.pov.parent) {
+          msg ("Granny enters your room, coming after you.")
+        }
+      }
+      else {
+        MoveObject (Granny, stairway landing)
+        if (Granny.parent = game.pov.parent) {
+          msg ("Granny enters your room, coming after you.")
+        }
+      }
+    }
+    else if (Granny.parent.name = "stairway landing") {
+      choice = GetRandomInt(1, 2)
+      if (choice = 1) {
+        MoveObject (Granny, corridor)
+        if (Granny.parent = game.pov.parent) {
+          msg ("Granny enters your room, coming after you.")
+        }
+      }
+      else if (choice = 2) {
+        MoveObject (Granny, house vestibule)
+        if (Granny.parent = game.pov.parent) {
+          msg ("Granny enters your room, coming after you.")
+        }
+      }
+    }
+    else if (Granny.parent.name = "house vestibule") {
+      if (cellar.opened) {
+        choice = GetRandomInt(1, 2)
+        if (choice = 1) {
+          MoveObject (Granny, stairway landing)
+          if (Granny.parent = game.pov.parent) {
+            msg ("Granny enters your room, coming after you.")
+          }
+        }
+        else if (choice = 2) {
+          MoveObject (Granny, cellar)
+          if (Granny.parent = game.pov.parent) {
+            msg ("Granny enters your room, coming after you.")
+          }
+        }
+      }
+      else {
+        MoveObject (Granny, stairway landing)
+        if (Granny.parent = game.pov.parent) {
+          msg ("Granny enters your room, coming after you.")
+        }
+      }
+    }
+    else if (Granny.parent.name = "cellar") {
+      MoveObject (Granny, house vestibule)
+      if (Granny.parent = game.pov.parent) {
+        msg ("Granny enters your room, coming after you.")
+      }
+    }
+    Granny.sameroomcount = 0
+  </function>
+  <function name="checkdarkness" parameters="room"><![CDATA[
+    correctroom = GetObject (room)
+    if (correctroom.dark) {
+      if (correctroom.sameroomcount > 0) {
+        if (RandomChance(25)) {
+          msg ("Oh no! You walked into the slavering fangs of a lurking grue.")
+          picture ("grue.jpg")
+          gameover
+        }
+        else {
+          msg ("It is pitch dark. You are likely to be eaten by a grue.")
+        }
+      }
+      else {
+        msg ("It is pitch dark. You are likely to be eaten by a grue.")
+        correctroom.sameroomcount = correctroom.sameroomcount + 1
+      }
+    }
+  ]]></function>
+  <function name="gameover">
+    msg ("You died trying to escape Granny.")
+    PrintCentered ("* You have died! * Score:"  + game.score)
+    game.pov.gameended = true
+    finish
+  </function>
+</asl>
