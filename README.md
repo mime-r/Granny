@@ -1,6 +1,6 @@
 # Granny
 ## Granny - the text adventure.
-<img src="Granny/untitled.jpg" width="150"/>
+<img src="Granny/unnamed.jpg"/>
 
 > Made in Quest
 <b>(SUBMIT PULL REQUESTS ONTHIS WORK-IN-PROGRESS PROJECT :D )</b>
